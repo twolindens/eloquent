@@ -1,4 +1,3 @@
-<!-- This is the Start-Up template form W3Spaces.com-->
 <!DOCTYPE html>
 <html>
   <head>
@@ -8,6 +7,8 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+    <link rel="stylesheet" href="css/progressbar.css">
     <style>
     body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", sans-serif}
 
@@ -20,7 +21,7 @@
     .bgimg-1 {
       background-position: center;
       background-size: cover;
-      background-image: url("https://www.w3schools.com/w3images/mac.jpg");
+      background-image: url("images/eloquent_acorn.png");
       min-height: 100%;
     }
 
@@ -38,11 +39,11 @@
     <!-- Right-sided navbar links -->
     <div class="w3-right w3-hide-small">
       <a href="#about" class="w3-bar-item w3-button">ABOUT</a>
+      <a href="src/timeline.html" class="w3-bar-item w3-button"><i class="fa fa-user"></i>CONTRIBUTORS</a>
 <!--
-      <a href="#team" class="w3-bar-item w3-button"><i class="fa fa-user"></i> TEAM</a>
       <a href="#work" class="w3-bar-item w3-button"><i class="fa fa-th"></i> WORK</a>
-      <a href="#pricing" class="w3-bar-item w3-button"><i class="fa fa-usd"></i> PRICING</a>
 -->
+      <a href="#pricing" class="w3-bar-item w3-button"><i class="fa fa-usd"></i> PLANS</a>
       <a href="#contact" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i> CONTACT</a>
     </div>
     <!-- Hide right-floated links on small screens and replace them with a menu icon -->
@@ -57,31 +58,82 @@
 <nav class="w3-sidebar w3-bar-block w3-black w3-card w3-animate-left w3-hide-medium w3-hide-large" style="display:none" id="mySidebar">
   <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-large w3-padding-16">Close ×</a>
   <a href="#about" onclick="w3_close()" class="w3-bar-item w3-button">ABOUT</a>
+  <a href="src/timeline.html" onclick="w3_close()" class="w3-bar-item w3-button">CONTRIBUTORS</a>
 <!--
-  <a href="#team" onclick="w3_close()" class="w3-bar-item w3-button">TEAM</a>
   <a href="#work" onclick="w3_close()" class="w3-bar-item w3-button">WORK</a>
-  <a href="#pricing" onclick="w3_close()" class="w3-bar-item w3-button">PRICING</a>
 -->
+  <a href="#pricing" onclick="w3_close()" class="w3-bar-item w3-button">PLANS</a>
   <a href="#contact" onclick="w3_close()" class="w3-bar-item w3-button">CONTACT</a>
 </nav>
 
 <!-- Speech Recognition Section -->
-<div class="w3-container w3-light-grey" style="padding:128px 16px">
+<div class="w3-container w3-light-grey" style="padding:128px 16px"  id="home">
   <div class="w3-row-padding">
     <div class="w3-col m6">
-      <h3>Eloquent is ready.</h3>
-      <p>When you are ready to speak, press the button to receive feedback.</p>
-      <button id="button" class="w3-button w3-black" onclick="toggleStartStop()">
-        <i class="fa fa-microphone"> </i> Start Speaking
-      </button>
+
+      <div id="greetings_section">
+        <div id="greetings1" style="display:block;">
+          <h3>Eloquent is ready.</h3>
+          <p>
+            Press the button.<br>
+            Start Speaking.<br>
+            Feedback will display below
+          </p>
+        </div>
+
+        <div id="greetings2" style="display:none;">
+          <h3>Eloquent is Listening.</h3>
+          <p>
+            Start Speaking.<br>
+            Feedback will update below.
+          </p>
+        </div>
+
+        <div id="greetings3" style="display:none;">
+          <h3>Eloquent is Listening.</h3>
+          <p>Displaying feedback.</p>
+        </div>
+
+        <div>
+          <button id="button_listen" class="w3-button w3-black w3-margin" onclick="toggleStartStop()">
+            <i class="fa fa-microphone"> </i> Start
+          </button>
+        </div>
+      </div>
+
+      <div id="visual_feedback"  style="display:none;">       
+        
+        <div id="feedback-bar">
+          <div id="pacebar">0</div>
+        </div>
+        <p>words per minute</p>
+
+        <div id="feedback-bar">
+          <div id="fillerbar">0</div>
+        </div>
+        <p>filler words count</p>
+
+        <div id="feedback-bar">
+          <div id="confidencebar">0</div>
+        </div>
+        <p>algorithm confidence</p>
+        
+      </div>
     </div>
-    <div class="w3-col m6">
+    <div class="w3-col m6 w3-padding-large">
       <div id="welcome_image">
-        <img class="w3-image w3-round-large" src="https://www.w3schools.com/w3images/phone_buildings.jpg" alt="Buildings" width="700" height="394">
+        <img class="w3-image w3-round-large" src="images/eloquent_acorn.png" alt="Buildings" width="700" height="394">
       </div>
       <div id="transcribe_section" style="border:dotted;padding:10px;background-color: white;display:none;">
         <span id="final_span"></span>
         <span id="interim_span" style="color:grey"></span>
+      </div>
+      <div id="feedback_section"  style="display:none;">
+         word count: <span id="count_span">0</span><br>
+         seconds elapsed: <span id="time_span">0</span><br>
+         words per minute: <span id="pace_span">0</span><br>
+         filler words count: <span id="fillerwc_span">0</span><br>
+         confidence: <span id="confidence_span">0</span>
       </div>
     </div>
   </div>
@@ -285,67 +337,100 @@
 </div>
 -->
 <!-- Pricing Section -->
-<!--
-<div class="w3-container w3-center w3-dark-grey" style="padding:128px 16px" id="pricing">
-  <h3>PRICING</h3>
-  <p class="w3-large">Choose a pricing plan that fits your needs.</p>
+
+<div class="w3-container w3-center w3-dark-grey" style="padding:64px 16px" id="pricing">
+  <h3>PLANS</h3>
+  <p class="w3-large">New release coming soon.</p>
   <div class="w3-row-padding" style="margin-top:64px">
     <div class="w3-third w3-section">
       <ul class="w3-ul w3-white w3-hover-shadow">
-        <li class="w3-black w3-xlarge w3-padding-32">Basic</li>
-        <li class="w3-padding-16"><b>10GB</b> Storage</li>
-        <li class="w3-padding-16"><b>10</b> Emails</li>
-        <li class="w3-padding-16"><b>10</b> Domains</li>
-        <li class="w3-padding-16"><b>Endless</b> Support</li>
+        <li class="w3-black w3-padding-32">
+          <div class=" w3-xlarge">Basic</div>
+          <span>for you and your community</span>
+        </li>
+        <li class="w3-padding-16">Real-time feedback</li>
+        <li class="w3-padding-16">Speech pace</li>
+        <li class="w3-padding-16">Filler words</li>
+        <li class="w3-padding-16">Algorithm confidence</li>
+        <li class="w3-padding-16">Language Selection [COMING SOON]</li>
         <li class="w3-padding-16">
-          <h2 class="w3-wide">$ 10</h2>
-          <span class="w3-opacity">per month</span>
+          <h2 class="w3-wide">free</h2>
+          <!--<span class="w3-opacity">for you and your community</span>-->
         </li>
         <li class="w3-light-grey w3-padding-24">
-          <button class="w3-button w3-black w3-padding-large">Sign Up</button>
-        </li>
-      </ul>
-    </div>
-    <div class="w3-third">
-      <ul class="w3-ul w3-white w3-hover-shadow">
-        <li class="w3-red w3-xlarge w3-padding-48">Pro</li>
-        <li class="w3-padding-16"><b>25GB</b> Storage</li>
-        <li class="w3-padding-16"><b>25</b> Emails</li>
-        <li class="w3-padding-16"><b>25</b> Domains</li>
-        <li class="w3-padding-16"><b>Endless</b> Support</li>
-        <li class="w3-padding-16">
-          <h2 class="w3-wide">$ 25</h2>
-          <span class="w3-opacity">per month</span>
-        </li>
-        <li class="w3-light-grey w3-padding-24">
-          <button class="w3-button w3-black w3-padding-large">Sign Up</button>
+          <a href="https://forms.gle/x4xecWkUk1FpTXSr8">
+           <button class="w3-button w3-black w3-padding-large">Voice your preferences</button>
+          </a>
         </li>
       </ul>
     </div>
     <div class="w3-third w3-section">
       <ul class="w3-ul w3-white w3-hover-shadow">
-        <li class="w3-black w3-xlarge w3-padding-32">Premium</li>
-        <li class="w3-padding-16"><b>50GB</b> Storage</li>
-        <li class="w3-padding-16"><b>50</b> Emails</li>
-        <li class="w3-padding-16"><b>50</b> Domains</li>
-        <li class="w3-padding-16"><b>Endless</b> Support</li>
+        <!--<li class="w3-red w3-xlarge w3-padding-48">Pro</li>-->
+        <li class="w3-black w3-padding-32">
+          <div class="w3-xlarge">Pro</div>
+          <span>for your professional growth</span>
+        </li>
+        <li class="w3-padding-16">Pronunciation feedback</li>
+        <li class="w3-padding-16">Emotions indicator</li>
+        <li class="w3-padding-16">Personalized settings</li>
+        <li class="w3-padding-16">Mobile App</li>
+        <li class="w3-padding-16">Support</li>
         <li class="w3-padding-16">
-          <h2 class="w3-wide">$ 50</h2>
-          <span class="w3-opacity">per month</span>
+          <h2 class="w3-wide">coming soon</h2>
+          <!--<span class="w3-opacity">for your professional growth</span>-->
         </li>
         <li class="w3-light-grey w3-padding-24">
-          <button class="w3-button w3-black w3-padding-large">Sign Up</button>
+          <a href="https://forms.gle/x4xecWkUk1FpTXSr8">
+          <button class="w3-button w3-black w3-padding-large">Sign Up for updates</button>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="w3-third w3-section">
+      <ul class="w3-ul w3-white w3-hover-shadow">
+        <li class="w3-black w3-padding-32">
+          <div class="w3-xlarge">Enterprise</div>
+          <span>for your organizational excellence</span>
+        </li>
+        <li class="w3-padding-16">Privacy by design</li>
+        <li class="w3-padding-16">Enterprise login</li>
+        <li class="w3-padding-16">Roles and Permissions</li>
+        <li class="w3-padding-16">Peer connections</li>
+        <li class="w3-padding-16">Dashboard</li>
+        <li class="w3-padding-16">
+          <h2 class="w3-wide">coming soon</h2>
+          <!--<span class="w3-opacity">for your organizational excellence</span>-->
+        </li>
+        <li class="w3-light-grey w3-padding-24">
+          <a href="https://forms.gle/x4xecWkUk1FpTXSr8">
+            <button class="w3-button w3-black w3-padding-large">Sign Up for updates</button>
+          </a>
         </li>
       </ul>
     </div>
   </div>
 </div>
--->
+
 <!-- Contact Section -->
-<div class="w3-container w3-light-grey" style="padding:128px 16px" id="contact">
+<div class="w3-container w3-light-grey" style="padding:24px 16px" id="contact">
   <h3 class="w3-center">CONTACT</h3>
-  <p class="w3-center w3-large">Get in touch. Send us a message at </p>
-  <p class="w3-center"><i class="fa fa-envelope fa-fw w3-large w3-margin-right"></i>twolindens.info@gmail.com</p>
+  <!--<p class="w3-center w3-large">Lets get in touch. Send us a message at </p>-->
+  <p class="w3-center">
+    <a href="mailto: twolindens.info@gmail.com">
+    <i class="fa fa-envelope fa-fw w3-large w3-margin-right"></i>twolindens.info@gmail.com
+    </a>
+  </p>
+  <p class="w3-center">
+    <a href="https://github.com/twolindens/eloquent">
+    <i class="fa fa-github fa-fw w3-large w3-margin-right"></i>Github Repository  
+    </a>
+  </p>
+    <p class="w3-center">
+    <a href="https://forms.gle/x4xecWkUk1FpTXSr8">
+    <i class="fa fa-comment fa-fw w3-large w3-margin-right"></i>Feedback Form 
+    </a>
+  </p>
 <!--
   <div style="margin-top:48px">
     <p><i class="fa fa-map-marker fa-fw w3-xxlarge w3-margin-right"></i> Chicago, US</p>
@@ -366,101 +451,31 @@
     Image of location/map
     <img src="https://www.w3schools.com/w3images/map.jpg" class="w3-image w3-greyscale" style="width:100%;margin-top:48px">
   </div>
+  -->
 </div>
--->
 <!-- Footer. This section contains an ad for W3Schools Spaces. You can leave it to support us. -->
-<footer class="w3-center w3-black w3-padding-64">
+<footer class="w3-container w3-center w3-black w3-padding-64">
   <a href="#home" class="w3-button w3-light-grey"><i class="fa fa-arrow-up w3-margin-right"></i>To the top</a>
+
   <div class="w3-xlarge w3-section">
+    <!--
     <i class="fa fa-facebook-official w3-hover-opacity"></i>
     <i class="fa fa-instagram w3-hover-opacity"></i>
     <i class="fa fa-snapchat w3-hover-opacity"></i>
     <i class="fa fa-pinterest-p w3-hover-opacity"></i>
     <i class="fa fa-twitter w3-hover-opacity"></i>
     <i class="fa fa-linkedin w3-hover-opacity"></i>
+-->
   </div>
+
  <p class="w3-small">This website was made with W3schools Spaces. Make your own free website today!</p>
  <a class="w3-button w3-round-xxlarge w3-small w3-light-grey w3-margin-bottom" href="https://www.w3schools.com/spaces" target="_blank">Start now</a>
 </footer>
  
-<script>
-// Modal Image Gallery
-function onClick(element) {
-  document.getElementById("img01").src = element.src;
-  document.getElementById("modal01").style.display = "block";
-  var captionText = document.getElementById("caption");
-  captionText.innerHTML = element.alt;
-}
-
-
-// Toggle between showing and hiding the sidebar when clicking the menu icon
-var mySidebar = document.getElementById("mySidebar");
-
-function w3_open() {
-  if (mySidebar.style.display === 'block') {
-    mySidebar.style.display = 'none';
-  } else {
-    mySidebar.style.display = 'block';
-  }
-}
-
-// Close the sidebar with the close button
-function w3_close() {
-    mySidebar.style.display = "none";
-}
-</script>
+<script src="src/sidebar-toggle.js"></script>
 
 <!--Speech Recognition controls-->
-<script type="text/javascript">
-  var recognizing;
-  var recognition = new (window.SpeechRecognition ||
-  window.webkitSpeechRecognition ||
-  window.mozSpeechRecognition ||
-  window.msSpeechRecognition)();
-  recognition.continuous = true;
-  recognition.interimResults = true;
-  reset();
-  recognition.onend = reset;
-
-  recognition.onresult = function (event) {
-    var final = "";
-    var interim = "";
-    for (var i = 0; i < event.results.length; ++i) {
-      if (event.results[i].isFinal) {
-        final += event.results[i][0].transcript;
-      } else {
-        interim += event.results[i][0].transcript;
-      }
-    }
-    final_span.innerHTML = final;
-    interim_span.innerHTML = interim;
-  }
-
-  function reset() {
-    recognizing = false;
-    button.innerHTML = "Click to Speak";
-  }
-
-  function toggleStartStop() {
-    var welcome_image = document.getElementById("welcome_image");
-    var transcribe_section = document.getElementById("transcribe_section");
-
-    if (recognizing) {
-      recognition.stop();
-      welcome_image.style.display = "block";
-      transcribe_section.style.display = "none";
-      reset();
-    } else {
-      recognition.start();
-      recognizing = true;
-      button.innerHTML = "Click to Stop";
-      final_span.innerHTML = "";
-      interim_span.innerHTML = "";
-      welcome_image.style.display = "none";
-      transcribe_section.style.display = "block";
-    }
-  }
-</script>
+<script type="text/javascript" src="src/speech-recognition.js"></script>
 
 </body>
 </html>
